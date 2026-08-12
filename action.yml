@@ -8,38 +8,99 @@ inputs:
     required: true
     default: 'dist'
   trust-root:
-    description: 'Path to trust-root.json'
+    description: 'Path to trust-root.json. Must come from the repository, never from the deployment being signed.'
     required: true
   keys:
-    description: 'Newline-separated list of private key file paths'
+    description: 'Newline-separated private key file paths, enough to meet the trust root threshold'
     required: true
+
+  version:
+    description: 'veil-guard CLI release to install'
+    required: false
+    default: '0.1.1'
+  token:
+    description: >-
+      Token used to download the CLI release. The default only works if
+      veilmesh/veil-guard is public or is this same repository; otherwise supply a
+      token with read access to it.
+    required: false
+    default: ${{ github.token }}
+  bin-path:
+    description: 'Use an existing veil-guard binary and skip the download entirely'
+    required: false
+
   exclude:
-    description: 'Newline-separated path prefixes to exclude from SW enforcement'
+    description: >-
+      Newline-separated path prefixes the Service Worker leaves alone, e.g. /api/.
+      Scope is an allowlist, so dynamic endpoints with no file behind them are
+      refused unless carved out here.
     required: false
+  csp-source:
+    description: >-
+      Newline-separated extra script-src sources. An inline bootstrap that injects a
+      script from a third-party host cannot be inferred from the build directory.
+    required: false
+  navigation-html-fallback:
+    description: >-
+      Resolve /faq against a signed faq.html. Only for hosts that map clean URLs onto
+      files — under a single-page-app fallback this compares the wrong bytes and
+      blocks a healthy deployment.
+    required: false
+    default: 'false'
   headers-out:
-    description: 'Directory for Nginx / Caddy / Netlify header snippets'
+    description: 'Directory for the generated Nginx / Caddy / Netlify header snippets'
     required: false
-  audit-url:
-    description: 'Base URL to audit after signing (optional)'
+  enforce-headers:
+    description: 'Emit an enforcing Integrity-Policy instead of report-only'
     required: false
-  fail-on:
-    description: 'Minimum severity that fails the step: critical | warning | info'
+    default: 'false'
+  no-sri:
+    description: 'Skip SRI injection and leave the built HTML untouched'
     required: false
-    default: 'warning'
+    default: 'false'
+  not-after-days:
+    description: 'Manifest validity window in days (default 180). Expiry is a soft warning, never a tamper alert.'
+    required: false
+  source-commit:
+    description: 'Recorded as a claim by the signer, not a proof. Defaults to GITHUB_SHA.'
+    required: false
+
+  emit-runtime:
+    description: >-
+      Write veil-guard-sw.js and veil-guard-loader.js into the output directory
+      before signing, so the worker ships and is itself covered by the manifest.
+    required: false
+    default: 'true'
+  verify:
+    description: 'Re-check the signed output. Catches a later step writing after the signature.'
+    required: false
+    default: 'true'
+
   kms-key-id:
-    description: 'AWS/GCP KMS key ID'
+    description: >-
+      KMS key for signers whose P-256 half is remote. Setting this selects a
+      KMS-capable release build, which exists for linux-x64 and darwin-arm64 only.
     required: false
   kms-provider:
-    description: 'AWS/GCP KMS provider: aws | gcp'
+    description: 'aws | gcp; inferred from the key ID when omitted'
     required: false
-  bin-path:
-    description: 'Custom path to veil-guard binary (defaults to searching PATH)'
+
+  audit-url:
+    description: 'Base URL to audit after signing'
     required: false
+  audit-label:
+    description: 'Vantage-point label recorded in the audit snapshot'
+    required: false
+    default: 'ci'
+  fail-on:
+    description: 'Lowest audit severity that fails the step: critical | warning | info'
+    required: false
+    default: 'warning'
 
 outputs:
   manifest-sha256:
     description: 'SHA-256 of the signed veil-guard-manifest.json'
 
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'

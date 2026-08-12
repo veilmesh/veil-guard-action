@@ -1,0 +1,45 @@
+name: 'veil-guard sign & audit'
+description: 'Sign a web build with veil-guard and optionally audit a live deployment'
+author: 'VeilMesh Team'
+
+inputs:
+  dist:
+    description: 'Build output directory'
+    required: true
+    default: 'dist'
+  trust-root:
+    description: 'Path to trust-root.json'
+    required: true
+  keys:
+    description: 'Newline-separated list of private key file paths'
+    required: true
+  exclude:
+    description: 'Newline-separated path prefixes to exclude from SW enforcement'
+    required: false
+  headers-out:
+    description: 'Directory for Nginx / Caddy / Netlify header snippets'
+    required: false
+  audit-url:
+    description: 'Base URL to audit after signing (optional)'
+    required: false
+  fail-on:
+    description: 'Minimum severity that fails the step: critical | warning | info'
+    required: false
+    default: 'warning'
+  kms-key-id:
+    description: 'AWS/GCP KMS key ID'
+    required: false
+  kms-provider:
+    description: 'AWS/GCP KMS provider: aws | gcp'
+    required: false
+  bin-path:
+    description: 'Custom path to veil-guard binary (defaults to searching PATH)'
+    required: false
+
+outputs:
+  manifest-sha256:
+    description: 'SHA-256 of the signed veil-guard-manifest.json'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

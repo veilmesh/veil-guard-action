@@ -1,6 +1,6 @@
 {
   "name": "veil-guard-action",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "GitHub Action for veil-guard asset signing and auditing",
   "main": "dist/index.js",
   "type": "module",

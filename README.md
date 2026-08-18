@@ -52,7 +52,7 @@ would report `KMS support is disabled` partway through signing.
 | `dist` | `dist` | Build output directory. |
 | `trust-root` | — | Required. Must come from the repository, never from the deployment being signed. |
 | `keys` | — | Required. One key file path per line, enough to meet the threshold. |
-| `version` | `0.1.1` | CLI release to install. |
+| `version` | `0.2.0` | CLI release to install. |
 | `token` | `${{ github.token }}` | Used only to download the release. |
 | `bin-path` | — | Use an existing binary; skips the download. |
 | `exclude` | — | Prefixes the worker leaves alone, one per line. Scope is an allowlist, so dynamic endpoints must be carved out. |

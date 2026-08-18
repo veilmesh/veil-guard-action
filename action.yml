@@ -17,7 +17,7 @@ inputs:
   version:
     description: 'veil-guard CLI release to install'
     required: false
-    default: '0.1.1'
+    default: '0.2.0'
   token:
     description: >-
       Token used to download the CLI release. The default only works if

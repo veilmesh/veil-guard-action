@@ -19,7 +19,7 @@
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
     "@actions/tool-cache": "^4.0.0",
-    "@veilmesh/veil-guard": "file:../veil-guard-node"
+    "@veilmesh/veil-guard": "^0.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

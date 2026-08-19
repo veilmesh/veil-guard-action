@@ -1,5 +1,8 @@
 # veil-guard-action
 
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-veil--guard--action-blueviolet?logo=github-actions)](https://github.com/marketplace/actions/veil-guard-sign-audit)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-green)](LICENSE-MIT)
+
 Sign a web build with [`veil-guard`](https://github.com/veilmesh/veil-guard) in GitHub
 Actions: install the CLI, emit the Tier 1 Service Worker, hash every asset into a
 threshold-signed manifest, splice `integrity` attributes into the HTML, verify the
